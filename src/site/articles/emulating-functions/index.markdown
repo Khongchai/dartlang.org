@@ -90,11 +90,11 @@ An additional issue is how user-defined function classes relate to the type
 system.  To simulate functions properly, we want them to be members of the
 appropriate function type:
 
-{% prettify dart %}
+```dart
 typedef BinaryFunction(a,b);
 ...
 new WannabeFunction() is BinaryFunction; // true
-{% endprettify %}
+```
 
 Therefore, we decree that an object is a member of a function type if the
 object’s class has a call() method and that method is a member of the function
@@ -106,13 +106,13 @@ In Dart, you can customize how objects react to methods that are not explicitly
 defined in their class chain by overriding noSuchMethod(). Here's an example
 showing how you could use function emulation inside noSuchMethod():
 
-{% prettify dart %}
+```dart
 noSuchMethod(Invocation msg) =>
     msg.memberName == #foo ? Function.apply(baz,
                                 msg.positionalArguments,
                                 msg.namedArguments)
                           : super.noSuchMethod(msg);
-{% endprettify %}
+```
 
 The first branch handles the case where you want to forward just the parameters to
 another function. If you know `baz` doesn't take any named arguments,
@@ -124,14 +124,6 @@ The only argument to noSuchMethod() is an
 [Invocation](http://api.dartlang.org/dart_core/Invocation.html).
 The boolean properties of Invocation identify the syntactic form of the
 method invocation, as the following table shows.
-
-<!-- TODO: move this to stylesheet -->
-<style type="text/css">
-  .property-table { margin-bottom: 20px;}
-  .property-table td {border: 1px solid #bbb; text-align: center;}
-  .property-table td.true {background: #d9f2db;}
-  .property-table td.false {background: #ffbfbf;}
-</style>
 
 <table class="property-table">
 <tr>
