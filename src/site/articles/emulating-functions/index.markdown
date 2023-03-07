@@ -1,19 +1,4 @@
----
-layout: article
-title: "Emulating Functions in Dart"
-description: Learn how to define Dart classes that behave like functions.
-rel:
-  author: gilad-bracha
-has-permalinks: true
-article:
-  written_on: 2012-01-01
-  updated_on: 2013-05-30
-  collection: language-details
----
-
-{% include toc.html %}
-
-# {{ page.title }}
+# Emulating Functions in Dart
 
 <em>Written by Gilad Bracha <br>
 January 2012
@@ -27,20 +12,20 @@ that behave like functions.
 In the following example, we have an ordinary class `WannabeFunction` that
 happens to define a method named `call()`.
 
-{% prettify dart %}
+```dart
 class WannabeFunction {
   call(int a, int b) => a + b;
 }
-{% endprettify %}
+```
 
-The call() method is special, in that anyone who defines a call() method is
+The `call()` method is special, in that anyone who defines a call() method is
 presumed to dynamically emulate a function. This allows us to use instances of
 WannabeFunction as if they were functions that take two integer arguments:
 
-{% prettify dart %}
-var wf = new WannabeFunction();
+```dart
+final wf = WannabeFunction();
 wf(3, 4); // 7
-{% endprettify %}
+```
 
 The example above is rather trivial, and we would be better off writing a
 function directly. However, there are cases where this ability can be quite
@@ -54,7 +39,7 @@ suitably defined object.
 
 ### How does it work?
 
-When x(a<sub>1</sub>, .., a<sub>n</sub>) is evaluated, if it is a normal
+When $x(a_{1}, .., a_{n})$ is evaluated, if it is a normal
 function, it gets called in the normal way. If it isn't we just invoke call()
 on it. If x supports a call() method with suitable arguments it gets called.
 
@@ -69,11 +54,11 @@ a closure.
 The class Function defines the static method `apply()`
 with the following signature:
 
-{% prettify dart %}
+```dart
 static apply(Function function,
                       List positionalArguments,
                       [Map<Symbol, dynamic> namedArguments]);
-{% endprettify %}
+```
 
 The apply() function allows functions to be called in generic fashion. The
 last argument is positional, and is only needed if the function we mean to
@@ -86,15 +71,15 @@ via instances of class [Symbol](http://api.dartlang.org/docs/releases/latest/dar
 
 You can create symbols from strings:
 
-{% prettify dart %}
+```dart
 new Symbol('myFavoriteMethodName');
-{% endprettify %}
+```
 
 If possible, create constant symbol objects:
 
-{% prettify dart %}
+```dart
 const Symbol('myFavoriteMethodName');
-{% endprettify %}
+```
 
 Using constant symbols helps dart2js minify your code.
 
